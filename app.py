@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 
 app = Flask(__name__)
@@ -24,3 +24,7 @@ def welcome(id = None): # for set default none
         massage = "id should not be none"
     return massage
 
+# add html file
+@app.route('/external-html')
+def htmlfile():
+    return render_template("index-flask.html") # it looks in templates directory by it self
