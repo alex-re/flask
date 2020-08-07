@@ -27,4 +27,5 @@ def welcome(id = None): # for set default none
 # add html file
 @app.route('/external-html')
 def htmlfile():
-    return render_template("index-flask.html") # it looks in templates directory by it self
+    mylist = [1, 2, 3, 4, 5]
+    return render_template("index-flask.html", neme = "ali") # it looks in templates directory by it self

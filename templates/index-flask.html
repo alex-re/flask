@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>flask</title>
-    <link rel="stylesheet" href="../static/css/style-flask.css"> <!-- directory name HAS TO BE "static" -->
+    <!-- <link rel="stylesheet" href="../static/css/style-flask.css"> directory name HAS TO BE "static" -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style-flask.css') }}">
+
 </head>
 <body>
-    Hi
+    <p>Hi {{ name }}</p> <!-- if it cant find 'name' variable it will pass :) -->
 
+    {% if mylist %}
+        <ul>
+            {% for number in mylist %}
+                <li>{{number}}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
 
 </body>
