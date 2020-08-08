@@ -31,10 +31,16 @@ def htmlfile():
     return render_template("index-flask.html", neme = "ali", mylist = mylist) # it looks in templates directory by it self
 
 @app.route("/http_get_method")
-def get_method():
+def get_method(): # for GET
     data = request.args['id'] # note: this request is "flask.request"!
     return data
 
 @app.route("/login")
 def login():
     return render_template("form.html")
+
+@app.route("/submit")
+def submit():
+    # for GET
+    data = request.args.get()
+    return render_template("submit.html")
