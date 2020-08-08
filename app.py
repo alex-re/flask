@@ -1,5 +1,10 @@
 from flask import Flask, render_template, request
+import os
 
+
+# make directory named "uploaded_files"
+path = os.path.join("uploaded_files")
+os.makedirs(path, exist_ok="True")
 
 app = Flask(__name__)
 
@@ -69,7 +74,19 @@ def submit():
 def upload_file():
     return render_template("upload_file.html") 
 
-@app.route("/after_upload")
+@app.route("/after_upload", methods=["post"])
 def after_upload():
-    this_file = request.files["file"]
-    return this_file.filename
+        this_file = request.files["file"]
+        naff = ['', '.html', '.php', '.bat', '.htm', '.xml', '.exe', '.js', '.db'] # not_allowed_file_formats
+        if this_file.filename != naff[0] and this_file.filename[-5:] != naff[1] and this_file.filename[-4:] != naff[2] and this_file.filename[-4:] != naff[3] and this_file.filename[-4:] != naff[4] and this_file.filename[-4:] != naff[5] and this_file.filename[-4:] != naff[6] and this_file.filename[-3:] != naff[7] and this_file.filename[-3:] != naff[8] :
+            try:
+                dst_path = os.path.join(path, this_file.filename) # uploaded_files/<second arg>
+                this_file.save(dst_path)
+                res = this_file.filename + '  saved'
+            except Exception as e:
+                res = "error in saving file \n error: \n " + e
+        else:
+            res = "The file name is invalid \n you cant send blow file types \n "
+            for i in naff:
+                res = res + '\t' + i
+        return res
