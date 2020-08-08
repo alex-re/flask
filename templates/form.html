@@ -3,11 +3,12 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../static/css/form.css">
-    <script src="../static/javascript/form.js"></script>
 </head>
 <body>
 
-<h2>Modal Login Form</h2>
+<h2 class="title">Login</h2>
+
+<hr>
 
 <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
 
@@ -38,6 +39,18 @@
     </div>
   </form>
 </div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
 
 </body>
 </html>
