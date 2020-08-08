@@ -42,5 +42,7 @@ def login():
 @app.route("/submit")
 def submit():
     # for GET
-    data = request.args.get()
-    return render_template("submit.html")
+    email = request.args.get("email", "NO_EMAIL") # second is the defalt value
+    password = request.args.get("password", "NO_PASSWORD")
+
+    return render_template("submit.html", email=email, password=password)
