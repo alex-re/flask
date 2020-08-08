@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 
 app = Flask(__name__)
@@ -29,3 +29,8 @@ def welcome(id = None): # for set default none
 def htmlfile():
     mylist = [1, 2, 3, 4, 5]
     return render_template("index-flask.html", neme = "ali") # it looks in templates directory by it self
+
+@app.route("/http_get_method")
+def get_method():
+    data = request.args['id'] # note: this request is "flask.request"!
+    return data
