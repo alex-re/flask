@@ -64,3 +64,12 @@ def submit():
 #         email = request.form.get("email", "NO_EMAIL")
 #         password = request.form.get("password", "NO_PASSWORD")
 #     return render_template("submit.html", email=email, password=password)
+
+@app.route("/upload_file")
+def upload_file():
+    return render_template("upload_file.html") 
+
+@app.route("/after_upload")
+def after_upload():
+    this_file = request.files["file"]
+    return this_file.filename
