@@ -34,3 +34,7 @@ def htmlfile():
 def get_method():
     data = request.args['id'] # note: this request is "flask.request"!
     return data
+
+@app.route("/login")
+def login():
+    return render_template("form.html")
