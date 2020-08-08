@@ -30,19 +30,37 @@ def htmlfile():
     mylist = [1, 2, 3, 4, 5]
     return render_template("index-flask.html", neme = "ali", mylist = mylist) # it looks in templates directory by it self
 
-@app.route("/http_get_method")
-def get_method(): # for GET
-    data = request.args['id'] # note: this request is "flask.request"!
-    return data
-
 @app.route("/login")
 def login():
     return render_template("form.html")
 
-@app.route("/submit")
-def submit():
-    # for GET
-    email = request.args.get("email", "NO_EMAIL") # second is the defalt value
-    password = request.args.get("password", "NO_PASSWORD")
+# @app.route("/submit", methods=["GET"]) # default is GET
+# def submit():
+#     # for GET
+#     # note: this request is "flask.request"!
+#     email = request.args.get("email", "NO_EMAIL") # second is the defalt value
+#     password = request.args.get("password", "NO_PASSWORD")
 
+#     return render_template("submit.html", email=email, password=password)
+
+@app.route("/submit", methods=["post"])
+def submit():
+    # for POST
+    email = request.form.get("email", "NO_EMAIL")
+    password = request.form.get("password", "NO_PASSWORD")
+    
+#    email = request.form["email"] # because it return us a DICTIONARY
+#    password = request.form["password"]    
     return render_template("submit.html", email=email, password=password)
+
+
+# if you want to use POST and GET
+# @app.route("/submit", methods=["GET", "post"])
+# def submit():
+#     if request.method == "GET":
+#         email = request.args.get("email", "NO_EMAIL")
+#         password = request.args.get("password", "NO_PASSWORD")
+#     elif request.method == "POST":
+#         email = request.form.get("email", "NO_EMAIL")
+#         password = request.form.get("password", "NO_PASSWORD")
+#     return render_template("submit.html", email=email, password=password)
