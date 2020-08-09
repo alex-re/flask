@@ -90,7 +90,7 @@ def file_format_is_allowed(file_name):
 def after_upload():
     try:
         this_file = request.files["file"]
-        if file_format_is_allowed(this_file.file_name):
+        if file_format_is_allowed(this_file.filename):
             try:
                 dst_path = os.path.join(path, this_file.filename) # uploaded_files/<second arg>
                 this_file.save(dst_path)
@@ -100,6 +100,6 @@ def after_upload():
         else:
             res = "The file name is invalid or the format is not allowed \n "
 
-    except:
-        res = "ERROR"
+    except  Exception as e:
+        res = "ERROR \n " + e
     return res
