@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, abort
 import os
 
 
@@ -108,3 +108,14 @@ def after_upload():
 def redirector():
     # return redirect("/login")
     return redirect(url_for("hello"))  # function name in url_for (hello is for "/")
+
+@app.route("/abort")
+def aborter():
+    abort(404)  # http status_code
+
+@app.errorhandler(404)
+def error404handle(error):
+    # return "Hi ! \n error is : \n \n \n" + str(error)
+    return "Hi ! \n error is : \n \n \n" + str(error), 404  # better than uper one
+    # return render_template("error_404.html")
+    # return redirect("/")
