@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import os
 
 
@@ -103,3 +103,8 @@ def after_upload():
     except  Exception as e:
         res = "ERROR \n " + e
     return res
+
+@app.route("/redirect")
+def redirector():
+    # return redirect("/login")
+    return redirect(url_for("hello"))  # function name in url_for (hello is for "/")
