@@ -74,11 +74,23 @@ def submit():
 def upload_file():
     return render_template("upload_file.html") 
 
+def file_format_is_allowed(file_format):
+    naff = ['', '.html', '.php', '.bat', '.htm', '.xml', '.iso', '.exe', '.js', '.db']  # not_allowed_file_formats
+    aff = ['.jpg', ]  # allowed_file_formats
+    stat = True
+    
+    for i in naff:
+        if file_format == i:
+            stat = False
+    for i in aff:
+        if file_format != i:
+            stat = False
+    return stat
+
 @app.route("/after_upload", methods=["post"])
 def after_upload():
         this_file = request.files["file"]
-        naff = ['', '.html', '.php', '.bat', '.htm', '.xml', '.exe', '.js', '.db'] # not_allowed_file_formats
-        if this_file.filename != naff[0] and this_file.filename[-5:] != naff[1] and this_file.filename[-4:] != naff[2] and this_file.filename[-4:] != naff[3] and this_file.filename[-4:] != naff[4] and this_file.filename[-4:] != naff[5] and this_file.filename[-4:] != naff[6] and this_file.filename[-3:] != naff[7] and this_file.filename[-3:] != naff[8] :
+        if file_format_is_allowed(this_file.file_name):
             try:
                 dst_path = os.path.join(path, this_file.filename) # uploaded_files/<second arg>
                 this_file.save(dst_path)
@@ -86,7 +98,6 @@ def after_upload():
             except Exception as e:
                 res = "error in saving file \n error: \n " + e
         else:
-            res = "The file name is invalid \n you cant send blow file types \n "
-            for i in naff:
-                res = res + '\t' + i
+            res = "The file name is invalid or the format is not allowed \n "
+
         return res
