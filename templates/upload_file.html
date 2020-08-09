@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <form action="/after_upload" enctype="multipart/form-data" method="POST"> <!-- enctype just avalble in POST -->
+    <form action="/after_upload" accept="image/*" enctype="multipart/form-data" method="POST"> <!-- enctype just avalble in POST --> <!-- accept="https://www.w3schools.com/tags/att_input_accept.asp" -->
         <label for="file"><b>File</b></label>
         <br>
         <input type="file" name="file" required>
