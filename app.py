@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, abort
+from flask import Flask, render_template, request, redirect, url_for, abort, make_response
 import os
 
 
@@ -119,3 +119,27 @@ def error404handle(error):
     return "Hi ! \n error is : \n \n \n" + str(error), 404  # better than uper one
     # return render_template("error_404.html")
     # return redirect("/")
+
+@app.route("login_cookie")
+def login_cookie():
+    if request.cookies.get("user_email"):  # returns a dictionary
+        return "you have already logged in \n welcome your email is: \t \t " + request.cookies["user_email"]
+    else: 
+        return render_template("form_cookie.html")
+
+
+@app.route("/subimt_cookie", methods=["POST"])
+def submit_cookie():
+    try:
+        email = request.form["email"]  # returns a dictionary
+        password = request.form["password"]  # returns a dictionary
+        remember = request.form["remember"]
+
+        # request.cookies for get cookies
+
+        response = make_response("Cookie has setted! <a href="/">Home</a>")
+        response.set_cookie("user_email", email)
+
+        return response
+    except Exception as e:
+        return "maybe you didnt fill forms or we cant set cookie \n \n \n" + e
