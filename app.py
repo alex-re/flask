@@ -74,21 +74,21 @@ def submit():
 def upload_file():
     return render_template("upload_file.html") 
 
-def file_format_is_allowed(file_format):
-    naff = ['', '.html', '.php', '.bat', '.htm', '.xml', '.iso', '.exe', '.js', '.db']  # not_allowed_file_formats
-    aff = ['.jpg', ]  # allowed_file_formats
+def file_format_is_allowed(file_name):
+    file_format = file_name.split('.')[-1]
+    file_format = '.' + file_format
+    aff = ['.jpeg', '.jpg', '.png', '.gif']  # allowed file formats
+    naff = ['', '.html', '.php', '.bat', '.htm', '.xml', '.iso', '.exe', '.js', '.db']  # not allowed file formats
     stat = True
-    
-    for i in naff:
-        if file_format == i:
-            stat = False
-    for i in aff:
-        if file_format != i:
-            stat = False
+
+    if file_format not in aff  or file_format in naff:
+        stat = False
+
     return stat
 
 @app.route("/after_upload", methods=["post"])
 def after_upload():
+    try:
         this_file = request.files["file"]
         if file_format_is_allowed(this_file.file_name):
             try:
@@ -100,4 +100,6 @@ def after_upload():
         else:
             res = "The file name is invalid or the format is not allowed \n "
 
-        return res
+    except:
+        res = "ERROR"
+    return res
