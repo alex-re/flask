@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, abort, make_response
 import os
+from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFError
+
 
 
 # make directory named "uploaded_files"
@@ -7,6 +10,28 @@ path = os.path.join("uploaded_files")
 os.makedirs(path, exist_ok="True")
 
 app = Flask(__name__)
+
+
+app.secret_key = b"\x03I\xcd\xb5\xd1\xaa\x1c\x89B\x1e\xc0\xb30ZW\t\xff\xcam\n@\x95\xb9\xd7"  # os.urandom(24).hex()
+
+
+WTF_CSRF_CHECK_DEFAULT=True
+
+# WTF_CSRF_CHECK_DEFAULT=False
+# @app.before_request
+# def check_csrf():
+#     if not is_oauth(request):
+#         csrf.protect()
+
+csrf = CSRFProtect(app)
+csrf = CSRFProtect()
+csrf.init_app(app)
+
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    # return render_template('csrf_error.html', reason=e.description), 400
+    return e.description, 400
 
 
 @app.route("/")
@@ -120,7 +145,7 @@ def error404handle(error):
     # return render_template("error_404.html")
     # return redirect("/")
 
-@app.route("login_cookie")
+@app.route("/login_cookie")
 def login_cookie():
     if request.cookies.get("user_email"):  # returns a dictionary
         return "you have already logged in \n welcome your email is: \t \t " + request.cookies["user_email"]
@@ -128,7 +153,7 @@ def login_cookie():
         return render_template("form_cookie.html")
 
 
-@app.route("/subimt_cookie", methods=["POST"])
+@app.route("/submit_cookie", methods=["POST"])
 def submit_cookie():
     try:
         email = request.form["email"]  # returns a dictionary
@@ -142,5 +167,5 @@ def submit_cookie():
 
         return response
     except Exception as e:
-        return "maybe you didnt fill forms or we cant set cookie \n \n \n" + e
+        return f"cookies should be turn ON on your browser \n \n \n {e}"
 
