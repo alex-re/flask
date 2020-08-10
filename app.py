@@ -4,28 +4,16 @@ from flask_wtf.csrf import CSRFProtect
 from flask_wtf.csrf import CSRFError
 
 
+app = Flask(__name__)
+app.secret_key = b"\x03I\xcd\xb5\xd1\xaa\x1c\x89B\x1e\xc0\xb30ZW\t\xff\xcam\n@\x95\xb9\xd7"
+
+
+csrf = CSRFProtect()
+csrf.init_app(app)
 
 # make directory named "uploaded_files"
 path = os.path.join("uploaded_files")
 os.makedirs(path, exist_ok="True")
-
-app = Flask(__name__)
-
-
-app.secret_key = b"\x03I\xcd\xb5\xd1\xaa\x1c\x89B\x1e\xc0\xb30ZW\t\xff\xcam\n@\x95\xb9\xd7"  # os.urandom(24).hex()
-
-
-WTF_CSRF_CHECK_DEFAULT=True
-
-# WTF_CSRF_CHECK_DEFAULT=False
-# @app.before_request
-# def check_csrf():
-#     if not is_oauth(request):
-#         csrf.protect()
-
-csrf = CSRFProtect(app)
-csrf = CSRFProtect()
-csrf.init_app(app)
 
 
 @app.errorhandler(CSRFError)
@@ -149,7 +137,7 @@ def error404handle(error):
 def login_cookie():
     if request.cookies.get("user_email"):  # returns a dictionary
         return "you have already logged in \n welcome your email is: \t \t " + request.cookies["user_email"]
-    else: 
+    else:
         return render_template("form_cookie.html")
 
 

@@ -17,9 +17,9 @@
 <form method="post">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 </form>
+
 <script>
 var csrf_token = "{{ csrf_token() }}";
-
 $.ajaxSetup({
     beforeSend: function(xhr, settings) {
         if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
