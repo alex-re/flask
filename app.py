@@ -137,9 +137,10 @@ def submit_cookie():
 
         # request.cookies for get cookies
 
-        response = make_response("Cookie has setted! <a href="/">Home</a>")
+        response = make_response(render_template("submit_cookie.html", email=email, password=password, remember=remember))
         response.set_cookie("user_email", email)
 
         return response
     except Exception as e:
         return "maybe you didnt fill forms or we cant set cookie \n \n \n" + e
+
