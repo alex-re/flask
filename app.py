@@ -1,20 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, abort, make_response
 import os
-from flask_wtf.csrf import CSRFProtect
-from flask_wtf.csrf import CSRFError
+from flask_wtf.csrf import CSRFProtect, CSRFError
 
 
 app = Flask(__name__)
-app.secret_key = b"\x03I\xcd\xb5\xd1\xaa\x1c\x89B\x1e\xc0\xb30ZW\t\xff\xcam\n@\x95\xb9\xd7"
 
-
-csrf = CSRFProtect()
-csrf.init_app(app)
 
 # make directory named "uploaded_files"
 path = os.path.join("uploaded_files")
 os.makedirs(path, exist_ok="True")
 
+
+app.secret_key = b"\x03I\xcd\xb5\xd1\xaa\x1c\x89B\x1e\xc0\xb30ZW\t\xff\xcam\n@\x95\xb9\xd7"
+csrf = CSRFProtect()
+csrf.init_app(app)
 
 @app.errorhandler(CSRFError)
 def handle_csrf_error(e):

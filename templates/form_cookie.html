@@ -2,9 +2,8 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <link rel="stylesheet" href="../static/css/form_cookie.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -13,24 +12,6 @@
 <hr>
 
 <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
-
-<!-- csrf -->
-<form method="post">
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-</form>
-
-<script>
-var csrf_token = "{{ csrf_token() }}";
-
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrf_token);
-        }
-    }
-});
-</script>
-<!----------->
 
 
 <div id="id01" class="modal">
@@ -42,7 +23,21 @@ $.ajaxSetup({
       <img src="img_avatar2.png" alt="Avatar" class="avatar">
     </div>
 
+    <!-- csrf -->
+    <script>
+      var csrf_token = "{{ csrf_token() }}";
+    
+      $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrf_token);
+              }
+          }
+      });
+      </script>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
+      <!------------------------------------------------------------------>
 
     <div class="container">
       <label for="uname"><b>Email</b></label>
