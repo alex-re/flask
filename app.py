@@ -150,7 +150,7 @@ def submit_cookie():
         # request.cookies for get cookies
 
         response = make_response(render_template("submit_cookie.html", email=email, password=password, remember=remember))
-        response.set_cookie("user_email", email)
+        response.set_cookie("user_email", email)  # first one is name of cookie and the second one is its value
 
         return response
     except Exception as e:
