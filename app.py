@@ -8,10 +8,20 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 
-# create db
-file_dir = os.path.dirname(__file__)
+# create db  -------------------------------------------------------
+file_dir = os.path.dirname("/home/ali/flask/")
 goal_route = os.path.join(file_dir, "app.db")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + goal_route
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unic=False, nullable=True)  # 50 char maximum
+
+
+db.create_all()
+
+#--------------------------------------------------------------------
 
 
 app.permanent_session_lifetime = timedelta(days=1)
