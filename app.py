@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, make_response
+from flask import Flask, render_template, request, redirect, url_for, abort, make_response, session
 import os
 from flask_wtf.csrf import CSRFProtect, CSRFError
+from datetime import timedelta
 
 
 app = Flask(__name__)
+
+
+app.permanent_session_lifetime = timedelta(days=1)
 
 
 # make directory named "uploaded_files"
@@ -11,7 +15,8 @@ path = os.path.join("uploaded_files")
 os.makedirs(path, exist_ok="True")
 
 
-app.secret_key = b"\x03I\xcd\xb5\xd1\xaa\x1c\x89B\x1e\xc0\xb30ZW\t\xff\xcam\n@\x95\xb9\xd7"
+# app.secret_key = b"\x03I\xcd\xb5\xd1\xaa\x1c\x89B\x1e\xc0\xb30ZW\t\xff\xcam\n@\x95\xb9\xd7"
+app.secret_key = os.urandom(24)
 csrf = CSRFProtect()
 csrf.init_app(app)
 
@@ -134,8 +139,9 @@ def error404handle(error):
 
 @app.route("/login_cookie")
 def login_cookie():
-    if request.cookies.get("user_email"):  # returns a dictionary
-        return "you have already logged in \n welcome your email is: \t \t " + request.cookies["user_email"]
+    # request.cookies for get cookies
+    if request.cookies.get("user_email") and session.get("user_password"):  # returns a dictionary
+        return "you have already logged in \n welcome your email is: \t \t " + request.cookies["user_email"] + "\t pass:" + session["user_password"]
     else:
         return render_template("form_cookie.html")
 
@@ -147,10 +153,12 @@ def submit_cookie():
         password = request.form["password"]  # returns a dictionary
         remember = request.form["remember"]
 
-        # request.cookies for get cookies
 
         response = make_response(render_template("submit_cookie.html", email=email, password=password, remember=remember))
         response.set_cookie("user_email", email)  # first one is name of cookie and the second one is its value
+
+        session["user_password"] = password  # session returns a dictionary (sessions doesnt need `make_response`)
+        session.permanent = True
 
         return response
     except Exception as e:
