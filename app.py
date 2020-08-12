@@ -2,9 +2,16 @@ from flask import Flask, render_template, request, redirect, url_for, abort, mak
 import os
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from datetime import timedelta
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
+
+
+# create db
+file_dir = os.path.dirname(__file__)
+goal_route = os.path.join(file_dir, "app.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + goal_route
 
 
 app.permanent_session_lifetime = timedelta(days=1)
