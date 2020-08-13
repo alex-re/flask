@@ -201,18 +201,44 @@ def add_user():
 @app.route("/query_db")
 def query_db():
     all_users = User.query.all()
-    # User.query.filter_by(name="test_user").first()
 
     str_users = ""
     for i in all_users:
-        str_users += str(i)
+        str_users += str(i) + "<br/>"
     
     return str_users
 
 
+@app.route("/update_db")
+def update_db():
+    try:
+        goal_user = User.query.filter_by(name="test_user").first()
+        goal_user.name = "gholi_test"
+        db.session.commit()
+        return "update user name"
+    except Exception as e:
+        
+        return e
 
 
+@app.route("/query_db_like")
+# def query_db_like():
+#     goal_str = "gHo"
+#     user = User.query.filter(User.name.contains(goal_str).first()
+#     # user = User.query.filter(User.name.ilike(f"%{goal_str}%")).first()  # if upper and lower case is important you can use `like`
 
+#     return user
+
+
+@app.route("/delete_db")
+def delete_db():
+    try:
+        goal_user = User.query.filter_by(name="test_user").first()
+        db.session.delete(goal_user)
+        db.session.commit()
+        return "delete successfully"
+    except Exception as e:
+        return e
 
 
 #-----------------------------------------------------------------------
