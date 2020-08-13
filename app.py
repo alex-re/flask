@@ -224,7 +224,7 @@ def update_db():
 @app.route("/query_db_like")
 def query_db_like():
     goal_str = "gHo"
-    user = User.query.filter(User.name.contains(goal_str).first()
+    user = User.query.filter(User.name.contains(goal_str).first())
     # user = User.query.filter(User.name.ilike(f"%{goal_str}%")).first()  # if upper and lower case is important you can use `like`
 
     return user
