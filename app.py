@@ -12,11 +12,15 @@ app = Flask(__name__)
 file_dir = os.path.dirname("/home/ali/flask/")
 goal_route = os.path.join(file_dir, "app.db")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + goal_route
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unic=False, nullable=True)  # 50 char maximum
+    id = db.Column(db.Integer, primary_key=True)  # primary_key=True
+    name = db.Column(db.String(50), nullable=False)  # 50 char maximum  (unique=True)
+
+    def __repr__(self):
+        return self.name  # if i dont say User.[id, name, family, ...] return name with default
 
 
 db.create_all()
@@ -181,3 +185,28 @@ def submit_cookie():
     except Exception as e:
         return f"cookies should be turn ON on your browser \n \n \n {e}"
 
+
+# db -------------------------------------------------------------------
+@app.route("/add_user")
+def add_user():
+    # try:
+        user = User(name="test_user", user_id=1)
+        db.session.add(user)
+        db.session.commit()
+        return "add successfully!"
+    # except Exception as e:
+        # return "ERROR \t\t" + e
+
+
+@app.route("/query_db")
+def query_db():
+    all_users = User.query.all()
+    return all_users.name
+
+
+
+
+
+
+
+#-----------------------------------------------------------------------
