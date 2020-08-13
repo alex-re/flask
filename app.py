@@ -189,13 +189,13 @@ def submit_cookie():
 # db -------------------------------------------------------------------
 @app.route("/add_user")
 def add_user():
-    # try:
+    try:
         user = User(name="test_user")
         db.session.add(user)
         db.session.commit()
         return "add successfully!"
-    # except Exception as e:
-        # return "ERROR \t\t" + e
+    except Exception as e:
+        return "ERROR \t\t" + e
 
 
 @app.route("/query_db")
