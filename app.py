@@ -190,7 +190,7 @@ def submit_cookie():
 @app.route("/add_user")
 def add_user():
     # try:
-        user = User(name="test_user", user_id=1)
+        user = User(name="test_user")
         db.session.add(user)
         db.session.commit()
         return "add successfully!"
@@ -201,7 +201,11 @@ def add_user():
 @app.route("/query_db")
 def query_db():
     all_users = User.query.all()
-    return all_users.name
+    str_users = ""
+    for i in all_users:
+        str_users += str(i)
+    
+    return str_users
 
 
 
