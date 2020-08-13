@@ -201,6 +201,8 @@ def add_user():
 @app.route("/query_db")
 def query_db():
     all_users = User.query.all()
+    # User.query.filter_by(name="test_user").first()
+
     str_users = ""
     for i in all_users:
         str_users += str(i)
