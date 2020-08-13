@@ -23,7 +23,7 @@ class User(db.Model):
         return self.name  # if i dont say User.[id, name, family, ...] return name with default
 
 
-db.create_all()
+# db.create_all()
 
 #--------------------------------------------------------------------
 
