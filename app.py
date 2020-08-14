@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, make_response, session
+from flask import jsonify, Flask, render_template, request, redirect, url_for, abort, make_response, session
 import os
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from datetime import timedelta
@@ -23,7 +23,21 @@ class User(db.Model):
         return self.name  # if i dont say User.[id, name, family, ...] return name with default
 
 
-# db.create_all()
+class Writer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+
+
+class Books(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+
+    writer_id = db.Column(db.Integer(), db.ForeignKey("writer.id"))
+    writer = db.relationship("Writer", backref=db.backref("books"))
+
+
+
+db.create_all()  # after each change
 
 #--------------------------------------------------------------------
 
@@ -239,6 +253,33 @@ def delete_db():
         return "delete successfully"
     except Exception as e:
         return e
+
+
+@app.route("/add_book")
+def add_book():
+    # try:
+        writer = Writer(name="Ali")
+        book = Books(name="test_book", writer=writer)
+
+        writer.books.append(book)
+
+        db.session.add(book)
+        db.session.commit()
+        return "adding book successfully"
+    # except Exception as e:
+        # return "err <br/>" + e
+
+
+@app.route("/query_book")
+def query_book():
+    books = Books.query.all()
+    
+    str_books = ""
+    for book in books:
+        str_books += str(book.writer.name) + "<br/>"
+    return str_books
+
+
 
 
 #-----------------------------------------------------------------------
